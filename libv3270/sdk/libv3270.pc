@@ -1,0 +1,16 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+version_major=5
+version_minor=3
+
+Name: libv3270
+Description: 3270 Virtual Terminal for GTK
+Version: 5.3
+Requires: lib3270 gtk+-3.0
+Libs: -lv3270
+Libs.private: -lm  -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0 -lglib-2.0   -l3270
+Cflags:
+
