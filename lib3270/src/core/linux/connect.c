@@ -186,6 +186,7 @@ static void net_connected(H3270 *hSession, int GNUC_UNUSED(fd), LIB3270_IO_FLAG 
 								"%s",
 								host.message);
 
+		lib3270_write_log(hSession,"","LOG VLABS - HOST MESSAGE: %s", host.message);
 		lib3270_set_disconnected(hSession);
 		return errno = ENOTCONN;
 	}
@@ -269,10 +270,14 @@ static void net_connected(H3270 *hSession, int GNUC_UNUSED(fd), LIB3270_IO_FLAG 
 	{
 		time_t end = time(0)+seconds;
 
+		lib3270_write_log(hSession,"","LOG VLABS - SECONDS: %d", seconds);
+		lib3270_write_log(hSession,"","LOG VLABS - TIME: %ld", time(0));
+		lib3270_write_log(hSession,"","LOG VLABS - END: %ld", end);
 		while(time(0) < end)
 		{
 			lib3270_main_iterate(hSession,1);
 
+			lib3270_write_log(hSession,"","LOG VLABS - STATE-CONNECT: %d", hSession->connection.state);
 			switch(hSession->connection.state)
 			{
 			case LIB3270_PENDING:
@@ -300,6 +305,7 @@ static void net_connected(H3270 *hSession, int GNUC_UNUSED(fd), LIB3270_IO_FLAG 
 
 		}
 
+		lib3270_write_log(hSession,"","LOG VLABS - ANTES: OK");
 		lib3270_disconnect(hSession);
 		lib3270_write_log(hSession,"connect", "%s: %s",__FUNCTION__,strerror(ETIMEDOUT));
 

@@ -1,5 +1,5 @@
-IPC (interprocess communication) plugin & library for pw3270.
-=============================================================
+3270 Virtual Terminal for GTK.
+==============================
 
 Created originally as part of PW3270 application.
 
@@ -14,8 +14,7 @@ Requirements
 ============
 
  * GTK-3 (https://www.gtk.org/)
- * lib3270 (https://github.com/PerryWerneck/lib3270)
- * libv3270 (https://github.com/PerryWerneck/libv3270)
+ * lib3270 (https://softwarepublico.gov.br/social/pw3270/)
 
 
 Building for Linux
@@ -30,21 +29,26 @@ Cross-compiling on SuSE Linux (Native or WSL)
 
 1. First add the MinGW Repositories for your SuSE version from:
 
-	* https://build.opensuse.org/project/show/windows:mingw:win32
-	* https://build.opensuse.org/project/show/windows:mingw:win64
-	* https://build.opensuse.org/project/show/home:PerryWerneck:pw3270
- 
-2. Get sources from git
+	* https://build.opensuse.org/project/show/home:PerryWerneck:pw3270 
 
-	* git clone https://github.com/PerryWerneck/libipc3270.git ./libipc3270
+2. Get libv3270 sources from git
+
+	* git clone https://github.com/PerryWerneck/libv3270.git ./v3270
 
 3. Install cross compilers
 
+	* ./v3270/win/install-cross.sh --32 (for 32 bits)
+	* ./v3270/win/install-cross.sh --64 (for 64 bits)
+	* ./v3270/win/install-cross.sh --all (for 32 and 64 bits)
+
 3. Configure build
+
+	* ./v3270/win/win-configure.sh --32 (for 32 bits)
+	* ./v3270/win/win-configure.sh --64 (for 64 bits)
 
 4. Build
 
-	* cd libipc3270
+	* cd v3270
 	* make clean
 	* make all
 
@@ -56,21 +60,18 @@ Compiling for Windows (With MSYS2)
 
 	* Follow the guide on https://github.com/PerryWerneck/lib3270
 
-2. Build and install libv3270 
+2. Install the required libraries
 
-	* Follow the guide on https://github.com/PerryWerneck/libv3270
+	* pacman -S mingw-w64-x86_64-gtk3
 
-3. Get sources from git
+2. Get libv3270 sources from git
 
-	* git clone https://github.com/PerryWerneck/libipc3270.git ./libipc3270
+	* git clone https://github.com/PerryWerneck/libv3270.git ./libv3270
 
 4. Build library using the mingw shell
 
-	* cd libipc3270
+	* cd libv3270
 	* ./autogen.sh
 	* make all
 
-5. Install
-
-	* make install
 

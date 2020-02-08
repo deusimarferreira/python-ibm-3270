@@ -100,11 +100,12 @@ void lib3270_session_free(H3270 *h)
 		lib3270_linked_list_free(&h->listeners.actions[f]);
 
 	// Release Lu names
-    if(h->lu.names)
+    /*if(h->lu.name)
 	{
-		lib3270_free(h->lu.names);
-		h->lu.names = NULL;
-	}
+		lib3270_free(h->lu.name);
+		//h->lu.name = NULL;
+		strncpy(h->lu.name,NULL,LIB3270_LUNAME_LENGTH);
+	}*/
 
 
 	// Release memory

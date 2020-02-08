@@ -133,6 +133,7 @@
 	snprintf(hSession->full_model_name,LIB3270_FULL_MODEL_NAME_LENGTH,"IBM-327%c-%d",hSession->m3279 ? '9' : '8', hSession->model_num);
 
 	lib3270_write_event_trace(hSession,"Reconnecting to %s\n",lib3270_get_url(hSession));
+	lib3270_write_log(hSession,"","LOG VLABS - HOST: %s", lib3270_get_url(hSession));
 
 	hSession->ever_3270	= False;
 

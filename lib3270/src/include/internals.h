@@ -508,11 +508,12 @@ struct _h3270
 	*/
 
 	/// @brief LU
+	char		**lus;
 	struct
 	{
 		char		  reported[LIB3270_LU_MAX+1];
 		const char	* associated;						///< @brief The LU name associated with the session.
-		char		**names;							///< @brief Array with the LU names to try.
+		char		name[LIB3270_LUNAME_LENGTH+1];							///< @brief Array with the LU names to try.
 		char		**curr;
 		const char	* try;
 

@@ -114,7 +114,7 @@
 			break;
 
 		case V3270_PROPERTY_LU_NAMES:
-			g_value_take_string(value,v3270_get_lunames(GTK_WIDGET(object)));
+			g_value_take_string(value,(gchar *) v3270_get_luname(GTK_WIDGET(object)));
 			break;
 
 		case V3270_PROPERTY_TRACE:
@@ -220,7 +220,7 @@ LIB3270_EXPORT guint v3270_get_auto_disconnect(GtkWidget *widget)
  	return GTK_V3270(widget)->activity.disconnect;
 }
 
-LIB3270_EXPORT gchar * v3270_get_lunames(GtkWidget *widget)
+/*LIB3270_EXPORT gchar * v3270_get_lunames(GtkWidget *widget)
 {
 	g_return_val_if_fail(GTK_IS_V3270(widget),NULL);
 
@@ -230,5 +230,11 @@ LIB3270_EXPORT gchar * v3270_get_lunames(GtkWidget *widget)
 		return NULL;
 
 	return g_strjoinv(",",(gchar **) lunames);
-}
+}*/
 
+LIB3270_EXPORT const gchar * v3270_get_luname(GtkWidget *widget)
+{
+	g_return_val_if_fail(GTK_IS_V3270(widget),NULL);
+
+	return (gchar *) lib3270_get_luname(GTK_V3270(widget)->host);
+}

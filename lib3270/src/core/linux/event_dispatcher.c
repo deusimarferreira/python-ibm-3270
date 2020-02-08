@@ -52,6 +52,7 @@
  */
 int lib3270_default_event_dispatcher(H3270 *hSession, int block)
 {
+	lib3270_write_log(hSession,"","LOG VLABS - lib3270_default_event_dispatcher: %d", 1);
 	int ns;
 	struct timeval now, twait, *tp;
 	int events;

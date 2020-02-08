@@ -353,17 +353,20 @@ static int background_ssl_negotiation(H3270 *hSession, void *message)
 }
 
 int ssl_negotiate(H3270 *hSession)
-{
+{;
 	int rc;
 	SSL_ERROR_MESSAGE msg;
 
 	memset(&msg,0,sizeof(msg));
+	lib3270_write_log(hSession,"","LOG VLABS - negotiate.ssl_negotiate: %s", ERR_reason_error_string(msg.error));
 
 	set_ssl_state(hSession,LIB3270_SSL_NEGOTIATING);
 	non_blocking(hSession,False);
 
 	rc = lib3270_run_task(hSession, background_ssl_negotiation, &msg);
 
+	lib3270_write_log(hSession,"","LOG VLABS - negotiate.ssl_negotiate-RC: %d", rc);
+	lib3270_write_log(hSession,"","LOG VLABS - negotiate.ssl_negotiate-EACCES: %d", EACCES);
 	if(rc == EACCES)
 	{
 		// SSL validation has failed
@@ -375,6 +378,7 @@ int ssl_negotiate(H3270 *hSession)
 		else
 			abort = popup_ssl_error(hSession,rc,msg.title,msg.text,ERR_reason_error_string(msg.error));
 
+		lib3270_write_log(hSession,"","LOG VLABS - negotiate.ssl_negotiate-IF: %s - %s - %s", ERR_reason_error_string(msg.error), msg.text, msg.description);
 		if(abort)
 		{
 			host_disconnect(hSession,1); // Disconnect with "failed" status.
@@ -385,6 +389,7 @@ int ssl_negotiate(H3270 *hSession)
 	else if(rc)
 	{
 		// SSL Negotiation has failed.
+		lib3270_write_log(hSession,"","LOG VLABS - negotiate.ssl_negotiate-ELSE: %s - %s - %s", ERR_reason_error_string(msg.error), msg.text, msg.description);
 		host_disconnect(hSession,1); // Disconnect with "failed" status.
 
 		if(msg.description)

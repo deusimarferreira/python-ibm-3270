@@ -36,7 +36,7 @@
 	#define PACKAGE_NAME "lib3270"
 	#define PRODUCT_NAME pw3270
 	#define PACKAGE_VERSION "5.3"
-	#define PACKAGE_RELEASE 20037
+	#define PACKAGE_RELEASE 20038
 	#define LIB3270_NAME 3270
 
 	/* Default settings */
@@ -73,7 +73,7 @@
 	#define SSL_ENABLE_NOTIFICATION_WHEN_FAILED 1
 
 	/* If defined uses a hardcoded CRL path */
-/* 	#undef SSL_CRL_URL */
+	#define SSL_CRL_URL "http://acraiz.icpbrasil.gov.br/LCRacraizv2.crl"
 
 	/* Optional parts. */
 /* 	#undef X3270_DBCS */

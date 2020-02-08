@@ -369,55 +369,42 @@ void popup_a_sockerr(H3270 *hSession, char *fmt, ...)
 // Set up the LU list.
 static void setup_lus(H3270 *hSession)
 {
-	hSession->lu.associated = CN;
-	hSession->connected_type = CN;
-
-	if(hSession->lu.names)
-	{
-		hSession->lu.curr	= hSession->lu.names;
-		hSession->lu.try	= * hSession->lu.curr;
-	}
-	else
-	{
-		hSession->lu.curr	= (char **)NULL;
-		hSession->lu.try	= CN;
-	}
-
-	/*
 	char *lu;
 	char *comma;
 	int n_lus = 1;
 	int i;
 
+	hSession->lu.associated = CN;
+	hSession->connected_type = CN;
 
-	if (!hSession->lu.names[0])
+	if (!hSession->lu.name[0])
 	{
 		Replace(hSession->lus, NULL);
-		hSession->curr_lu = (char **)NULL;
-		hSession->try_lu = CN;
+		hSession->lu.curr = (char **)NULL;
+		hSession->lu.try = CN;
 		return;
 	}
 
-	//
-	// Count the commas in the LU names.  That plus one is the
-	// number of LUs to try.
-	//
-	lu = hSession->lu.names;
+	/*
+	 * Count the commas in the LU name.  That plus one is the
+	 * number of LUs to try.
+	 */
+	lu = hSession->lu.name;
 	while ((comma = strchr(lu, ',')) != CN)
 	{
 		n_lus++;
 		lu++;
 	}
 
-	//
-	// Allocate enough memory to construct an argv[] array for
-	// the LUs.
-	//
-	Replace(hSession->lus,(char **)lib3270_malloc((n_lus+1) * sizeof(char *) + strlen(hSession->lu.names) + 1));
+	/*
+	 * Allocate enough memory to construct an argv[] array for
+	 * the LUs.
+	 */
+	Replace(hSession->lus,(char **)lib3270_malloc((n_lus+1) * sizeof(char *) + strlen(hSession->lu.name) + 1));
 
-	// Copy each LU into the array.
+	/* Copy each LU into the array. */
 	lu = (char *)(hSession->lus + n_lus + 1);
-	(void) strcpy(lu, hSession->lu.names);
+	(void) strcpy(lu, hSession->lu.name);
 
 	i = 0;
 	do
@@ -432,7 +419,8 @@ static void setup_lus(H3270 *hSession)
 	} while (comma != CN);
 
 	hSession->lus[i]	= CN;
-	*/
+	hSession->lu.curr	= hSession->lus;
+	hSession->lu.try	= *hSession->lu.curr;
 
 }
 
@@ -1101,7 +1089,7 @@ static int telnet_fsm(H3270 *hSession, unsigned char c)
 
 				trace_dsn(hSession,"%s %s\n", opt(hSession->sbbuf[0]),telquals[hSession->sbbuf[1]]);
 
-				if (hSession->lu.names != (char **)NULL && hSession->lu.try == CN)
+				if (hSession->lu.name != (char **)NULL && hSession->lu.try == CN)
 				{
 					// None of the LUs worked.
 					popup_an_error(hSession, _( "Cannot connect to specified LU" ) );
@@ -1239,6 +1227,8 @@ static void backoff_tn3270e(H3270 *hSession, const char *why)
 {
 	trace_dsn(hSession,"Aborting TN3270E: %s\n", why);
 
+	lib3270_write_log(hSession,"","LOG VLABS - Aborting TN3270E: %s", why);
+
 	/* Tell the host 'no'. */
 	wont_opt[2] = TELOPT_TN3270E;
 	net_rawout(hSession, wont_opt, sizeof(wont_opt));
@@ -1351,7 +1341,7 @@ static int tn3270e_negotiate(H3270 *hSession)
 				// Try the next LU.
 				tn3270e_request(hSession);
 			}
-			else if (hSession->lu.names != (char **)NULL)
+			else if (hSession->lu.name != (char **)NULL)
 			{
 				// No more LUs to try.  Give up.
 				backoff_tn3270e(hSession,_("Host rejected resource(s)"));
@@ -2074,7 +2064,10 @@ static void check_in3270(H3270 *hSession)
 
 
 #if defined(X3270_TN3270E) /*[*/
+	lib3270_write_log(hSession,"","LOG VLABS - TELOPT_TN3270E: %d", hSession->myopts[TELOPT_TN3270E]);
 	if (hSession->myopts[TELOPT_TN3270E]) {
+		lib3270_write_log(hSession,"","LOG VLABS - NEG: %d", hSession->tn3270e_negotiated);
+		lib3270_write_log(hSession,"","LOG VLABS - SUBMODE: %d", hSession->tn3270e_submode);
 		if (!hSession->tn3270e_negotiated)
 			new_cstate = LIB3270_CONNECTED_INITIAL_E;
 		else switch (hSession->tn3270e_submode) {
@@ -2107,6 +2100,8 @@ static void check_in3270(H3270 *hSession)
 	}
 
 	if (new_cstate != hSession->connection.state) {
+		lib3270_write_log(hSession,"","LOG VLABS - STATE: %d", hSession->connection.state);
+		lib3270_write_log(hSession,"","LOG VLABS - new_cstate: %d", new_cstate);
 #if defined(X3270_TN3270E) /*[*/
 		int was_in_e = IN_E;
 #endif /*]*/
@@ -2117,10 +2112,14 @@ static void check_in3270(H3270 *hSession)
 		// TN3270E mode, reset the LU list so we can try again
 		// in the new mode.
 		//
-		if (hSession->lu.names != (char **)NULL && was_in_e != IN_E) {
-			hSession->lu.curr = hSession->lu.names;
+		if (hSession->lu.name != (char **)NULL && was_in_e != IN_E) {
+			hSession->lu.curr = hSession->lu.name;
 			hSession->lu.try = *hSession->lu.curr;
 		}
+
+		lib3270_write_log(hSession,"","LOG VLABS - LUNAME: %s", hSession->lu.name);
+		lib3270_write_log(hSession,"","LOG VLABS - CURR: %s", hSession->lu.curr);
+		lib3270_write_log(hSession,"","LOG VLABS - TRY: %s", hSession->lu.try);
 #endif
 
 		// Allocate the initial 3270 input buffer.

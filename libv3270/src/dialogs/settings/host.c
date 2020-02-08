@@ -792,7 +792,7 @@ static void load(GtkWidget *w, GtkWidget *terminal)
     }
 
     // Load LU names
-    g_autofree gchar * lunames = v3270_get_lunames(terminal);
+    g_autofree gchar * lunames = (gchar *) v3270_get_luname(terminal);
     gtk_entry_set_text(widget->input.entry[ENTRY_LU_NAMES],lunames ? lunames : "");
 
     // Load unsigned int combos

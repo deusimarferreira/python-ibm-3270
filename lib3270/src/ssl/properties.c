@@ -212,6 +212,7 @@ LIB3270_EXPORT char * lib3270_get_ssl_peer_certificate_text(const H3270 *hSessio
  {
 
     FAIL_IF_ONLINE(hSession);
+	lib3270_write_log(hSession,"","LOG VLABS - PROTOCOL: %s", protocol);
 
 #ifdef SSL_ENABLE_CRL_CHECK
 

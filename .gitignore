@@ -1,3 +1,16 @@
 **/.obj/
+**.bin/
+*.bin
+.bin
 
+**/.tmp/
+**/.pot/
+**.cache
+**.log
+**.m4
+**.status
 *Makefile
+**/build/
+
+**.pc
+**.vscode/

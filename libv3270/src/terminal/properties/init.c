@@ -43,6 +43,7 @@
  	} properties[] = {
  		{ "connected",				&klass->properties.online									},
  		{ "associated-lu",			&klass->properties.associated_lu							},
+ 		{ "luname",					&klass->properties.luname									},
  		{ "url",					&klass->properties.settings[V3270_SETTING_URL]				},
  		{ "model-number",			&klass->properties.settings[V3270_SETTING_MODEL_NUMBER]		},
  		{ "has-selection",			&klass->properties.selection								},

@@ -199,7 +199,7 @@
  LIB3270_EXPORT gboolean		  v3270_get_dynamic_font_spacing(GtkWidget *widget);
 
  LIB3270_EXPORT void			  v3270_set_lunames(GtkWidget *widget, const gchar *lunames);
- LIB3270_EXPORT gchar 			* v3270_get_lunames(GtkWidget *widget);
+ LIB3270_EXPORT const gchar 	* v3270_get_luname(GtkWidget *widget);
 
  // Clipboard
  typedef enum _v3270_copy_mode

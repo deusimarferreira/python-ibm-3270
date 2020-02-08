@@ -1,35 +1,35 @@
-Source: libipc3270
+Source: libv3270
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, automake, gettext, libssl-dev, pkg-config, libdbus-1-dev, libdbus-glib-1-dev, lib3270-dev, libv3270-dev
+Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, libssl-dev, libssl-dev, lib3270-dev, libgtk-3-dev, imagemagick
 
-Package: libipc3270
+Package: libv3270
 Architecture: any
 Section: libs
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Recommends: pw3270-plugin-ipc (= ${binary:Version})
-Provides: libipc3270 (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: libv3270 (= ${binary:Version})
 Description: TN3270 Access library.
- TN3270 access library originally designed as part of the pw3270 application.
+ 3270 Virtual Terminal for GTK.
 
-Package: libipc3270-dev
+Package: libv3270-dev
 Architecture: any
-Provides: libipc3270-dev (= ${binary:Version})
 Section: libdevel
-Depends: ${misc:Depends}, lib3270-dev, libipc3270 (= ${binary:Version})
+Depends: ${misc:Depends}, pkg-config, libgtk-3-dev, lib3270-dev, libv3270 (= ${binary:Version})
+Provides: libv3270-dev (= ${binary:Version})
 Description: TN3270 Access library development files.
- TN3270 access library originally designed as part of the pw3270 application.
+ 3270 Virtual Terminal for GTK development files.
 
-Package: libipc3270-dbg
+Package: libv3270-glade
 Architecture: any
-Depends: libipc3270 (= ${binary:Version}), ${misc:Depends}
-Description: Debugging symbols for libipc3270
- This package contains the debugging symbols for libipc3270.
+Section: libdevel
+Depends: ${misc:Depends}, libv3270-dev (= ${binary:Version})
+Description: Glade files for v3270 library.
+ Glade files for 3270 Virtual Terminal for GTK.
 
-Package: pw3270-plugin-ipc
+Package: libv3270-dbg
 Architecture: any
-Depends: ${misc:Depends}, pw3270
-Enhances: libipc3270 (= ${binary:Version})
-Description: IPC server plugin for pw3270.
- This package provides a plugin exporting an active pw3270 to D-Bus.
+Depends: ${misc:Depends}, libv3270 (= ${binary:Version})
+Description: Debugging symbols for GTK 3270 virtual terminal
+ This package contains the debugging symbols for libv3270.
+

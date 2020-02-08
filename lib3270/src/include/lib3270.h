@@ -1029,10 +1029,10 @@
 	LIB3270_EXPORT const char * lib3270_get_associated_luname(const H3270 *hSession);
 
 	/**
-	 * @brief Set the LU names.
+	 * @brief Set the LU name.
 	 *
 	 * @param hSession	Session handle.
-	 * @param lunames	Comma separated list of the LU names to set.
+	 * @param luname	LU names to set.
 	 *
 	 * @return 0 if the list was set, non zero if not (sets errno)
 	 *
@@ -1040,9 +1040,20 @@
 	 * @retval EINVAL	Invalid session handle.
 	 *
 	 */
-	LIB3270_EXPORT int lib3270_set_lunames(H3270 *hSession, const char *luname);
+	LIB3270_EXPORT int lib3270_set_luname(H3270 *hSession, const char *luname);
 
-	LIB3270_EXPORT const char ** lib3270_get_lunames(H3270 *hSession);
+	/**
+	 * Get connected LU name.
+	 *
+	 * Get the name of the connected LU; the value is internal to lib3270 and
+	 * should not be changed ou freed.
+	 *
+	 * @param hSession	Session handle.
+	 *
+	 * @return conected LU name or NULL if not connected.
+	 *
+	 */
+	LIB3270_EXPORT const char * lib3270_get_luname(const H3270 *hSession);
 
 	LIB3270_EXPORT int lib3270_is_connected(const H3270 *h);
 

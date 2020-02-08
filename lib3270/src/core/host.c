@@ -113,6 +113,7 @@ int host_disconnect(H3270 *hSession, int failed)
 			trace_ansi_disc(hSession);
 #endif /*]*/
 
+		lib3270_write_log(hSession,"","LOG VLABS - HOST MESSAGE4: %d", failed);
 		lib3270_set_disconnected(hSession);
 
 		return 0;
@@ -125,6 +126,8 @@ int host_disconnect(H3270 *hSession, int failed)
 
 int lib3270_set_cstate(H3270 *hSession, LIB3270_CSTATE cstate)
 {
+	lib3270_write_log(hSession,"","LOG VLABS - STATE: %d", hSession->connection.state);
+	lib3270_write_log(hSession,"","LOG VLABS - cstate: %d", cstate);
 	if(hSession->connection.state != cstate)
 	{
 		trace_dsn(
@@ -169,6 +172,7 @@ void host_in3270(H3270 *hSession, LIB3270_CSTATE new_cstate)
 			   new_cstate == LIB3270_CONNECTED_SSCP ||
 			   new_cstate == LIB3270_CONNECTED_TN3270E);
 
+	lib3270_write_log(hSession,"","LOG VLABS - host.host_in3270: %d", hSession->connection.state);
 	lib3270_set_cstate(hSession,new_cstate);
 	hSession->ever_3270 = now3270;
 	lib3270_st_changed(hSession, LIB3270_STATE_3270_MODE, now3270);
@@ -176,6 +180,7 @@ void host_in3270(H3270 *hSession, LIB3270_CSTATE new_cstate)
 
 void lib3270_set_connected_initial(H3270 *hSession)
 {
+	lib3270_write_log(hSession,"","LOG VLABS - host.lib3270_set_connected_initial: %d", hSession->connection.state);
 	lib3270_set_cstate(hSession,LIB3270_CONNECTED_INITIAL);
 
 	hSession->starting	= 1;	// Enable autostart
@@ -187,6 +192,7 @@ void lib3270_set_connected_initial(H3270 *hSession)
 
 void lib3270_set_disconnected(H3270 *hSession)
 {
+	lib3270_write_log(hSession,"","LOG VLABS - FUNCTION!");
 	CHECK_SESSION_HANDLE(hSession);
 
 	lib3270_set_cstate(hSession,LIB3270_NOT_CONNECTED);
@@ -289,6 +295,19 @@ LIB3270_EXPORT const char * lib3270_get_associated_luname(const H3270 *hSession)
 	return hSession->lu.associated;
 }
 
+LIB3270_EXPORT int lib3270_set_luname(H3270 *hSession, const char *luname)
+{
+	lib3270_write_log(hSession,"","LOG VLABS - lib3270_set_luname: %s",luname);
+    FAIL_IF_ONLINE(hSession);
+	strncpy(hSession->lu.name,luname,LIB3270_LUNAME_LENGTH);
+	return 0;
+}
+
+LIB3270_EXPORT const char * lib3270_get_luname(const H3270 *hSession)
+{
+	return hSession->lu.associated;
+}
+
 LIB3270_EXPORT const char * lib3270_get_url(const H3270 *hSession)
 {
 	if(hSession->host.url)
@@ -348,6 +367,7 @@ LIB3270_EXPORT int lib3270_set_url(H3270 *h, const char *n)
 	int						  f;
 
 	trace("%s(%s)",__FUNCTION__,str);
+	lib3270_write_log(h,"","LOG VLABS - LIBSSL: %d",HAVE_LIBSSL);
 
 #ifdef HAVE_LIBSSL
 	h->ssl.enabled = 0;

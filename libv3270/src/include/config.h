@@ -34,7 +34,7 @@
 
 	#define PACKAGE_NAME "libv3270"
 	#define PACKAGE_VERSION "5.3"
-	#define PACKAGE_RELEASE 20.2.6
+	#define PACKAGE_RELEASE 20.2.7
 	#define PRODUCT_NAME pw3270
 
 	#define HAVE_LIBM 1

@@ -9,7 +9,7 @@ export DH_VERBOSE=1
 export DH_COMPAT=9
 
 # Name of the package
-PACKAGE_NAME=libipc3270
+PACKAGE_NAME=libv3270
 
 CFLAGS = -g
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -55,17 +55,16 @@ install: build
 	# Build package
 	make all
 
-	# Install libipc3270
-	make DESTDIR=$(PWD)/debian/libipc3270 install-linux-lib
-	find $(PWD)/debian/libipc3270 -type f | sed -e "s@^$(PWD)/debian/libipc3270/@/@g" > $(PWD)/debian/libipc3270.install
+	# Install library
+	make DESTDIR=$(PWD)/debian/$(PACKAGE_NAME) install-linux-lib
 
 	# Install dev
-	make DESTDIR=$(PWD)/debian/libipc3270-dev install-devel
-	find $(PWD)/debian/libipc3270-dev -type f | sed -e "s@^$(PWD)/debian/libipc3270-dev/@/@g" > $(PWD)/debian/libipc3270-dev.install
-
-	# Install plugin module
-	make DESTDIR=$(PWD)/debian/pw3270-plugin-ipc install-plugin
-	find $(PWD)/debian/libipc3270-dev -type f | sed -e "s@^$(PWD)/debian/pw3270-plugin-ipc/@/@g" > $(PWD)/debian/pw3270-plugin-ipc.install
+	make DESTDIR=$(PWD)/debian/$(PACKAGE_NAME)-dev install-dev
+	mkdir -p $(PWD)/debian/$(PACKAGE_NAME)-dev/usr/lib
+	mv $(PWD)/debian/$(PACKAGE_NAME)/usr/lib/*.so $(PWD)/debian/$(PACKAGE_NAME)-dev/usr/lib
+  
+	# Install glade
+	make DESTDIR=$(PWD)/debian/libv3270-glade install-glade
 
 	# --- end custom part for installing
 
@@ -92,7 +91,7 @@ binary-arch: build install
 #	dh_undocumented
 	dh_installchangelogs
 	dh_link
-	dh_strip --dbg-package=libipc3270-dbg
+	dh_strip --dbg-package=$(PACKAGE_NAME)-dbg
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs

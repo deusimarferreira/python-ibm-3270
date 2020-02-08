@@ -251,7 +251,8 @@ LIB3270_EXPORT void	v3270_set_dynamic_font_spacing(GtkWidget *widget, gboolean s
 LIB3270_EXPORT void v3270_set_lunames(GtkWidget *widget, const gchar *lunames)
 {
 	g_return_if_fail(GTK_IS_V3270(widget));
-	lib3270_set_lunames(GTK_V3270(widget)->host,(lunames && *lunames ? lunames : NULL));
+	//lib3270_set_lunames(GTK_V3270(widget)->host,(lunames && *lunames ? lunames : NULL));
+	lib3270_set_luname(GTK_V3270(widget)->host,(lunames && *lunames ? lunames : NULL));
 	v3270_notify_setting(widget,V3270_SETTING_LU_NAMES);
 }
 

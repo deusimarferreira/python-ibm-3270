@@ -25,9 +25,10 @@ print("Using TN3270 Version " + tn3270.version())
 #print(tn3270.py3270)
 
 session = tn3270.Session("")
+#session.crl_url("/opt/certs/ICP-Brasil.pem")
 
-session.connect("tn3270://zos.efglobe.com:telnet?crl_preferred_protocol=tls")
-#session.connect("tn3270s://hod.serpro.gov.br:23000?luname=AWVR8462")
+#session.connect("tn3270://zos.efglobe.com:telnet?luname=TCPA0096")
+session.connect("tn3270s://hod.serpro.gov.br:23000?luname=AWVR8462&crl_preferred_protocol=TLS1_2")
 #session.connect("tn3270s://hod.serpro.gov.br:23000")
 #session.connect("tn3270s://hod.serpro.gov.br:23000")
 session.timeout = 10
@@ -63,21 +64,21 @@ print(session)
 print("-----------------------------------------------------------------------")
 
 #session.enter().wait(21,21,"Enter your choice==>")
-session.set("NVAS")
-session.enter()
+#session.set("NVAS")
+#session.enter()
 
-print("-----------------------------------------------------------------------")
-print(session)
-print("-----------------------------------------------------------------------")
+#print("-----------------------------------------------------------------------")
+#print(session)
+#print("-----------------------------------------------------------------------")
 
-session.set(15, 29, "deusimar")
-session.set(16, 29, "q1w2e3")
-session.enter()
+#session.set(15, 29, "deusimar")
+#session.set(16, 29, "q1w2e3")
+#session.enter()
 #session.pf(15)
 
 
-print("-----------------------------------------------------------------------")
-print(session)
-print("-----------------------------------------------------------------------")
+#print("-----------------------------------------------------------------------")
+#print(session)
+#print("-----------------------------------------------------------------------")
 
 input("Press enter to exit")
